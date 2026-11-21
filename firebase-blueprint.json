@@ -1,0 +1,262 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Authenticated FIT BUSTER user profile, goals, streak summary, level progression, and notification preferences.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Owner Firebase Auth UID" },
+        "displayName": { "type": "string", "description": "Account name used as certificate recipient" },
+        "email": { "type": "string", "description": "Account email" },
+        "age": { "type": "integer", "description": "User age in years" },
+        "fitnessGoal": { "type": "string", "description": "Primary fitness goal" },
+        "preferredWorkout": { "type": "string", "description": "Preferred workout type" },
+        "dailyCalorieGoal": { "type": "integer", "description": "Daily calorie intake target" },
+        "dailyWaterGoalMl": { "type": "integer", "description": "Daily water goal in milliliters" },
+        "dailyProteinGoalG": { "type": "integer", "description": "Daily protein target in grams" },
+        "vegetarianDefault": { "type": "boolean", "description": "Prefer vegetarian food options" },
+        "challengePoints": { "type": "integer", "description": "Accumulated fitness challenge points" },
+        "disciplinePoints": { "type": "integer", "description": "Accumulated discipline points" },
+        "challengeLevel": { "type": "integer", "description": "Fitness challenge level 1-10" },
+        "punishmentLevel": { "type": "integer", "description": "Discipline level 1-10" },
+        "currentStreak": { "type": "integer", "description": "Current daily streak count" },
+        "longestStreak": { "type": "integer", "description": "Longest daily streak count" },
+        "lastActiveDate": { "type": "string", "description": "ISO date yyyy-MM-dd of last active day" },
+        "recoveryDates": { "type": "array", "description": "Planned recovery dates yyyy-MM-dd" },
+        "activeDates": { "type": "array", "description": "Recorded active workout/habit dates yyyy-MM-dd" },
+        "notificationsEnabled": { "type": "boolean", "description": "Master notification toggle" },
+        "workoutReminderEnabled": { "type": "boolean", "description": "Daily workout alarm toggle" },
+        "workoutReminderHour": { "type": "integer", "description": "Workout alarm hour 0-23" },
+        "workoutReminderMinute": { "type": "integer", "description": "Workout alarm minute 0-59" },
+        "waterReminderEnabled": { "type": "boolean", "description": "Water reminder toggle" },
+        "missionReminderEnabled": { "type": "boolean", "description": "Mission reminder toggle" },
+        "streakReminderEnabled": { "type": "boolean", "description": "Streak reminder toggle" },
+        "themeAccent": { "type": "string", "description": "Accent theme preset" },
+        "profilePrivate": { "type": "boolean", "description": "Privacy preference toggle" },
+        "hasSignature": { "type": "boolean", "description": "Whether original authorized signature is saved" },
+        "signatureUpdatedAtMillis": { "type": "integer", "description": "Epoch millis when signature was last updated" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Server timestamp on creation" },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Server timestamp on update" }
+      },
+      "required": ["userId", "displayName", "createdAt", "updatedAt"]
+    },
+    "PrivateAsset": {
+      "title": "PrivateAsset",
+      "description": "Private user asset backup such as uploaded signature image or profile photo.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "assetType": { "type": "string", "enum": ["SIGNATURE", "PROFILE_PHOTO"] },
+        "imageBase64": { "type": "string" },
+        "mimeType": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "assetType", "imageBase64", "mimeType", "createdAt", "updatedAt"]
+    },
+    "WorkoutSession": {
+      "title": "WorkoutSession",
+      "description": "Completed workout record with duration, GPS distance, pace, and calorie burn estimate.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "workoutType": { "type": "string", "enum": ["OUTDOOR_WALK", "OUTDOOR_RUN", "OUTDOOR_ROWING", "FUNCTIONAL_STRENGTH", "SPRINT_TRAINING", "CUSTOM"] },
+        "customTitle": { "type": "string" },
+        "durationSeconds": { "type": "integer" },
+        "distanceMeters": { "type": "number" },
+        "averagePaceSecPerKm": { "type": "number" },
+        "caloriesBurned": { "type": "integer" },
+        "gpsTracked": { "type": "boolean" },
+        "gpsPointCount": { "type": "integer" },
+        "dateKey": { "type": "string" },
+        "notes": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "workoutType", "durationSeconds", "caloriesBurned", "dateKey", "createdAt", "updatedAt"]
+    },
+    "SprintRecord": {
+      "title": "SprintRecord",
+      "description": "30m, 60m, or 100m sprint timing and personal best tracking.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "distanceMeters": { "type": "integer" },
+        "timeMillis": { "type": "integer" },
+        "manualEntry": { "type": "boolean" },
+        "personalBest": { "type": "boolean" },
+        "dateKey": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "distanceMeters", "timeMillis", "dateKey", "createdAt", "updatedAt"]
+    },
+    "RestLog": {
+      "title": "RestLog",
+      "description": "Rest timer session history.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "plannedSeconds": { "type": "integer" },
+        "actualSeconds": { "type": "integer" },
+        "status": { "type": "string", "enum": ["COMPLETED", "SKIPPED"] },
+        "dateKey": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "plannedSeconds", "actualSeconds", "status", "dateKey", "createdAt", "updatedAt"]
+    },
+    "MealEntry": {
+      "title": "MealEntry",
+      "description": "Logged meal or food item for diet & nutrition tracking.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "foodName": { "type": "string" },
+        "mealType": { "type": "string", "enum": ["BREAKFAST", "LUNCH", "DINNER", "SNACK"] },
+        "calories": { "type": "integer" },
+        "proteinG": { "type": "integer" },
+        "carbsG": { "type": "integer" },
+        "fatsG": { "type": "integer" },
+        "vegetarian": { "type": "boolean" },
+        "dateKey": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "foodName", "mealType", "calories", "dateKey", "createdAt", "updatedAt"]
+    },
+    "WaterLog": {
+      "title": "WaterLog",
+      "description": "Water intake entry in milliliters.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "amountMl": { "type": "integer" },
+        "dateKey": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "amountMl", "dateKey", "createdAt", "updatedAt"]
+    },
+    "MissionProgress": {
+      "title": "MissionProgress",
+      "description": "Fitness mission or challenge progress and automatic reward status.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "missionKey": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "timeframe": { "type": "string", "enum": ["DAILY", "WEEKLY", "MONTHLY"] },
+        "category": { "type": "string", "enum": ["RUNNING", "SPRINT", "STRENGTH", "HYDRATION", "CONSISTENCY", "SPECIAL", "CHALLENGE"] },
+        "difficulty": { "type": "string", "enum": ["EASY", "MEDIUM", "HARD", "ELITE"] },
+        "targetValue": { "type": "integer" },
+        "currentValue": { "type": "integer" },
+        "rewardPoints": { "type": "integer" },
+        "deadlineKey": { "type": "string" },
+        "status": { "type": "string", "enum": ["ACTIVE", "COMPLETED", "SKIPPED"] },
+        "completedDateKey": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "missionKey", "title", "timeframe", "category", "difficulty", "targetValue", "currentValue", "rewardPoints", "status", "createdAt", "updatedAt"]
+    },
+    "MedalRecord": {
+      "title": "MedalRecord",
+      "description": "Permanently unlocked fitness medal (deduplicated by medalKey document ID).",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "medalKey": { "type": "string" },
+        "title": { "type": "string" },
+        "tier": { "type": "string", "enum": ["BRONZE", "SILVER", "GOLD", "PLATINUM", "SPECIAL"] },
+        "description": { "type": "string" },
+        "unlockedDateKey": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "medalKey", "title", "tier", "description", "unlockedDateKey", "createdAt", "updatedAt"]
+    },
+    "CertificateRecord": {
+      "title": "CertificateRecord",
+      "description": "Permanently stored FIT BUSTER achievement certificate.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "certificateCode": { "type": "string" },
+        "certificateName": { "type": "string" },
+        "recipientName": { "type": "string" },
+        "achievementDescription": { "type": "string" },
+        "medalEarned": { "type": "string" },
+        "completionDateKey": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "certificateCode", "certificateName", "recipientName", "achievementDescription", "medalEarned", "completionDateKey", "createdAt", "updatedAt"]
+    },
+    "DisciplineLog": {
+      "title": "DisciplineLog",
+      "description": "Punishment & Discipline safe exercise completion, skip, or recovery day log.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "exerciseType": { "type": "string", "enum": ["UTHAK_BAITHAK", "SIT_UPS", "WALL_PUSH_UPS", "KNEE_RAISES", "LIGHT_WALKING", "MOBILITY", "OPTIONAL_CHALLENGE"] },
+        "level": { "type": "integer" },
+        "repsCompleted": { "type": "integer" },
+        "durationSeconds": { "type": "integer" },
+        "status": { "type": "string", "enum": ["COMPLETED", "SKIPPED", "RECOVERY_DAY"] },
+        "pointsAwarded": { "type": "integer" },
+        "dateKey": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "exerciseType", "level", "status", "dateKey", "createdAt", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "User profile, fitness preferences, streak & level totals"
+    },
+    "/users/{userId}/private/{assetId}": {
+      "schema": { "$ref": "#/entities/PrivateAsset" },
+      "description": "Private user assets such as uploaded signature and profile photo"
+    },
+    "/users/{userId}/workouts/{workoutId}": {
+      "schema": { "$ref": "#/entities/WorkoutSession" },
+      "description": "User workout sessions"
+    },
+    "/users/{userId}/sprints/{sprintId}": {
+      "schema": { "$ref": "#/entities/SprintRecord" },
+      "description": "User sprint timing records"
+    },
+    "/users/{userId}/rest_logs/{restId}": {
+      "schema": { "$ref": "#/entities/RestLog" },
+      "description": "User rest timer logs"
+    },
+    "/users/{userId}/meals/{mealId}": {
+      "schema": { "$ref": "#/entities/MealEntry" },
+      "description": "User diet and nutrition logs"
+    },
+    "/users/{userId}/water_logs/{waterId}": {
+      "schema": { "$ref": "#/entities/WaterLog" },
+      "description": "User water intake logs"
+    },
+    "/users/{userId}/missions/{missionId}": {
+      "schema": { "$ref": "#/entities/MissionProgress" },
+      "description": "User missions and challenges progress"
+    },
+    "/users/{userId}/medals/{medalId}": {
+      "schema": { "$ref": "#/entities/MedalRecord" },
+      "description": "User unlocked medals"
+    },
+    "/users/{userId}/certificates/{certId}": {
+      "schema": { "$ref": "#/entities/CertificateRecord" },
+      "description": "User unlocked certificates"
+    },
+    "/users/{userId}/discipline_logs/{logId}": {
+      "schema": { "$ref": "#/entities/DisciplineLog" },
+      "description": "User discipline and recovery day logs"
+    }
+  }
+}

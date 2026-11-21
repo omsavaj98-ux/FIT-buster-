@@ -1,0 +1,6 @@
+{
+  "name": "FIT BUSTER",
+  "description": "Complete fitness, workout, GPS running & sprint training, nutrition, hydration, missions, medals, certificates, and discipline tracker.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
